@@ -1,9 +1,10 @@
+import { getCommands } from "./repl.js";
+
 export function commandHelp() {
     console.log(`
         Welcome to the Pokedex!
         Usage:
 
-        help: Displays a help message
-        exit: Exits the Pokedex
+        ${Object.values(getCommands()).map(c => `${c.name}: ${c.description}`).join('\n\t')}
         `)
 }

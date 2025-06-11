@@ -1,4 +1,4 @@
-import { cleanInput } from "./repl";
+import { cleanInput, getCommands } from "./repl";
 import { describe, test, expect } from "vitest";
 
 describe.each([
@@ -20,6 +20,37 @@ describe.each([
       expect(actual).toHaveLength(expected.length);
       for (const i in expected) {
         expect(actual[i]).toBe(expected[i]);
+      }
+    });
+  });
+
+  describe.each([
+    {
+      input: "exit",
+      expectedName: "exit",
+      shouldExist: true
+    },
+    {
+      input: "help",
+      expectedName: "help",
+      shouldExist: true
+    },
+    {
+      input: "unknown",
+      expectedName: null,
+      shouldExist: false
+    }
+  ])("getCommands()", ({ input, expectedName, shouldExist }) => {
+    test(`Command: ${input}`, () => {
+      const actual = getCommands()[input];
+      
+      if (shouldExist) {
+        expect(actual).toBeDefined();
+        expect(actual.name).toBe(expectedName);
+        expect(actual.description).toBeDefined();
+        expect(actual.callback).toBeInstanceOf(Function);
+      } else {
+        expect(actual).toBeUndefined();
       }
     });
   });
