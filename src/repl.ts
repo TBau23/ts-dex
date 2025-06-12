@@ -5,13 +5,13 @@ export function cleanInput(input: string): string[] {
     return x;
 }
 
-export function startREPL() {
+export async function startREPL() {
     const state = initState();
 
     const { rl, commands } = state;
 
     rl.prompt();
-    rl.on("line", (input) => {
+    rl.on("line", async (input) => {
         const clean = cleanInput(input);
         if (clean.length == 0 ) {
             rl.prompt();
@@ -19,7 +19,7 @@ export function startREPL() {
         // should probably check something other than just the first word
         const command = commands[clean[0]];
         if (command) {
-            command.callback(state);
+            await command.callback(state);
         } else {
             console.log(`Unknown command: ${clean[0]}`);
         }

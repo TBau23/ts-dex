@@ -8,6 +8,8 @@ export type State = {
     rl: Interface;
     commands: Record<string, CLICommand>;
     pokeapi: PokeAPI;
+    nextLocationsURL: string | null;
+    previousLocationsURL: string | null;
 }
 
 export function initState(): State {
@@ -36,11 +38,11 @@ export function initState(): State {
                 description: 'Return a page of 20 locations',
                 callback: commandMap,
             },
-            // mapb: {
-            //     name: 'mapb',
-            //     description: 'Return a apage of previous 20 locations',
-            //     callback: commandMapB,
-            // }
+            mapb: {
+                name: 'mapb',
+                description: 'Return a apage of previous 20 locations',
+                callback: commandMapB,
+            }
         }
     }
 
@@ -48,6 +50,8 @@ export function initState(): State {
         rl,
         commands: getCommands(),
         pokeapi,
+        nextLocationsURL: null,
+        previousLocationsURL: null,
     }
 }
 
