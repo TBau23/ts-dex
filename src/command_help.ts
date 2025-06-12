@@ -1,10 +1,10 @@
-import { getCommands } from "./repl.js";
+import { State } from "./state.js";
 
-export function commandHelp() {
+export function commandHelp(state: State) {
     console.log(`
         Welcome to the Pokedex!
         Usage:
 
-        ${Object.values(getCommands()).map(c => `${c.name}: ${c.description}`).join('\n\t')}
+        ${Object.values(state.commands).map(c => `${c.name}: ${c.description}`).join('\n\t')}
         `)
 }

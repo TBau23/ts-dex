@@ -1,29 +1,4 @@
-import { createInterface } from "readline";
-import { commandExit } from "./command_exit.js";
-import { commandHelp } from "./command_help.js";
-
-export type CLICommand = {
-    name: string;
-    description: string;
-    callback: (commands: Record<string, CLICommand>) => void;
-}
-
-export function getCommands(): Record<string, CLICommand> {
-    return {
-        exit: {
-            name: "exit",
-            description: "Exit the Pokedex",
-            callback: commandExit,
-        },
-        help: {
-            name: "help",
-            description: "Display a help message",
-            callback: commandHelp,
-        }
-    }
-}
-
-
+import { initState } from "./state.js";
 
 export function cleanInput(input: string): string[] {
     const x: string[] = input.trim().split(' ').filter(x => x !== '').map(x => x.toLowerCase());
@@ -31,11 +6,9 @@ export function cleanInput(input: string): string[] {
 }
 
 export function startREPL() {
-    const rl = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: 'Pokedex > '
-    });
+    const state = initState();
+
+    const { rl, commands } = state;
 
     rl.prompt();
     rl.on("line", (input) => {
@@ -44,9 +17,9 @@ export function startREPL() {
             rl.prompt();
         }
         // should probably check something other than just the first word
-        const command = getCommands()[clean[0]];
+        const command = commands[clean[0]];
         if (command) {
-            command.callback(getCommands());
+            command.callback(state);
         } else {
             console.log(`Unknown command: ${clean[0]}`);
         }

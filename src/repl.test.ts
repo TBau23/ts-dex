@@ -1,4 +1,5 @@
-import { cleanInput, getCommands } from "./repl";
+import { cleanInput } from "./repl";
+import { initState } from "./state.js";
 import { describe, test, expect } from "vitest";
 
 describe.each([
@@ -42,7 +43,8 @@ describe.each([
     }
   ])("getCommands()", ({ input, expectedName, shouldExist }) => {
     test(`Command: ${input}`, () => {
-      const actual = getCommands()[input];
+      const state = initState();
+      const actual = state.commands[input];
       
       if (shouldExist) {
         expect(actual).toBeDefined();
