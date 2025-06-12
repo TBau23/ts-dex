@@ -1,15 +1,47 @@
-
-
+import { Cache } from "./pokecache.js";
+import https from 'https';
 
 export class PokeAPI {
     private static readonly baseURL = "https://pokeapi.co/api/v2";
+    private readonly cache = new Cache(1000 * 60 * 60 * 24);
   
     constructor() {}
+
+    async fetch<T>(url: string): Promise<T> {
+        const cached = this.cache.get<T>(url);
+        
+        if (cached) {
+          console.log('Cache hit', url)
+          return cached;
+        }
+        try {
+
+          const agent = new https.Agent({
+            secureProtocol: 'TLSv1_2_method', // Force TLS 1.2
+            // Or try: secureProtocol: 'TLS_method' for auto-negotiation
+        });
+
+          const res = await fetch(url, {
+            method: 'GET',
+            // @ts-ignore
+            agent: agent,
+          });
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          const data = await res.json();
+          this.cache.add(url, data);
+          return data;
+        } catch (err) {
+          console.error('Fetch error', err)
+          throw err;
+        }
+    }
   
     async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
       const url = pageURL ? pageURL : `${PokeAPI.baseURL}/location-area`;
-      const res = await fetch(url);
-      const data = await res.json();
+      const data = await this.fetch<ShallowLocations>(url);
       return {
         count: data.count,
         next: data.next,
@@ -20,8 +52,7 @@ export class PokeAPI {
   
     async fetchLocation(locationName: string): Promise<Location> {
       const url = `${PokeAPI.baseURL}/location-area/${locationName}`;
-      const res = await fetch(url);
-      const data = await res.json();
+      const data = await this.fetch<Location>(url);
       return {
         name: data.name,
         url: data.url,
