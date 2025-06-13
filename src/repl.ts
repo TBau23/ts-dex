@@ -16,10 +16,15 @@ export async function startREPL() {
         if (clean.length == 0 ) {
             rl.prompt();
         }
+
         // should probably check something other than just the first word
         const command = commands[clean[0]];
         if (command) {
-            await command.callback(state);
+            if (command.name === 'explore') {
+                await command.callback(state, clean[1]);
+            } else {
+                await command.callback(state);
+            }
         } else {
             console.log(`Unknown command: ${clean[0]}`);
         }

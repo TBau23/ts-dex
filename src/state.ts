@@ -2,6 +2,7 @@ import { createInterface, type Interface } from "readline";
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
 import { commandMap, commandMapB } from "./command_map.js";
+import { commandExplore } from "./command_explore.js";
 import { PokeAPI } from "./pokeapi.js";
 
 export type State = {
@@ -42,6 +43,11 @@ export function initState(): State {
                 name: 'mapb',
                 description: 'Return a apage of previous 20 locations',
                 callback: commandMapB,
+            },
+            explore: {
+                name: 'explore',
+                description: 'Explore a location',
+                callback: commandExplore,
             }
         }
     }
@@ -58,5 +64,5 @@ export function initState(): State {
 export type CLICommand = {
     name: string;
     description: string;
-    callback: (state: State) => Promise<void>;
+    callback: (state: State, ...args: string[]) => Promise<void>;
 }

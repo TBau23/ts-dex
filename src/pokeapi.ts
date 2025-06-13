@@ -18,8 +18,7 @@ export class PokeAPI {
 
           const agent = new https.Agent({
             secureProtocol: 'TLSv1_2_method', // Force TLS 1.2
-            // Or try: secureProtocol: 'TLS_method' for auto-negotiation
-        });
+          });
 
           const res = await fetch(url, {
             method: 'GET',
@@ -42,21 +41,14 @@ export class PokeAPI {
     async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
       const url = pageURL ? pageURL : `${PokeAPI.baseURL}/location-area`;
       const data = await this.fetch<ShallowLocations>(url);
-      return {
-        count: data.count,
-        next: data.next,
-        previous: data.previous,
-        results: data.results,
-      }
+      return data;
     }
   
     async fetchLocation(locationName: string): Promise<Location> {
       const url = `${PokeAPI.baseURL}/location-area/${locationName}`;
       const data = await this.fetch<Location>(url);
-      return {
-        name: data.name,
-        url: data.url,
-      }
+      const location : Location = data;
+      return location;
     }
   }
   
@@ -71,6 +63,54 @@ export class PokeAPI {
   };
   
   export type Location = {
+    encounter_method_rates: {
+      encounter_method: {
+        name: string;
+        url: string;
+      };
+      version_details: {
+        rate: number;
+        version: {
+          name: string;
+          url: string;
+        };
+      }[];
+    }[];
+    game_index: number;
+    id: number;
+    location: {
+      name: string;
+      url: string;
+    };
     name: string;
-    url: string;
+    names: {
+      language: {
+        name: string;
+        url: string;
+      };
+      name: string;
+    }[];
+    pokemon_encounters: {
+      pokemon: {
+        name: string;
+        url: string;
+      };
+      version_details: {
+        encounter_details: {
+          chance: number;
+          condition_values: any[];
+          max_level: number;
+          method: {
+            name: string;
+            url: string;
+          };
+          min_level: number;
+        }[];
+        max_chance: number;
+        version: {
+          name: string;
+          url: string;
+        };
+      }[];
+    }[];
   };
