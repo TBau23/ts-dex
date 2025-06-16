@@ -3,6 +3,7 @@ import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
 import { commandMap, commandMapB } from "./command_map.js";
 import { commandExplore } from "./command_explore.js";
+import { commandCatch } from "./command_catch.js";
 import { PokeAPI } from "./pokeapi.js";
 
 export type State = {
@@ -48,6 +49,11 @@ export function initState(): State {
                 name: 'explore',
                 description: 'Explore a location',
                 callback: commandExplore,
+            },
+            catch: {
+                name: 'catch',
+                description: 'Catch a pokemon',
+                callback: commandCatch,
             }
         }
     }

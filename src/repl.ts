@@ -20,7 +20,7 @@ export async function startREPL() {
         // should probably check something other than just the first word
         const command = commands[clean[0]];
         if (command) {
-            if (command.name === 'explore') {
+            if (command.name === 'explore' || command.name === 'catch') {
                 await command.callback(state, clean[1]);
             } else {
                 await command.callback(state);
