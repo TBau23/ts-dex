@@ -2,14 +2,6 @@
 > p_dex@1.0.0 dev
 > npx tsc && node dist/main.js
 
-Pokedex > - tentacool
-- tentacruel
-- magikarp
-- gyarados
-- remoraid
-- octillery
-- wingull
-- pelipper
-- shellos
-- gastrodon
+Pokedex > Throwing a Pokeball at squirtle...
+You missed squirtle!
 Pokedex > Closing the Pokedex... Goodbye!

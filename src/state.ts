@@ -5,6 +5,7 @@ import { commandMap, commandMapB } from "./command_map.js";
 import { commandExplore } from "./command_explore.js";
 import { commandCatch } from "./command_catch.js";
 import { PokeAPI } from "./pokeapi.js";
+import { Pokemon } from "./pokeapi.js";
 
 export type State = {
     rl: Interface;
@@ -12,6 +13,7 @@ export type State = {
     pokeapi: PokeAPI;
     nextLocationsURL: string | null;
     previousLocationsURL: string | null;
+    pokedex: Record<string, Pokemon>;
 }
 
 export function initState(): State {
@@ -64,6 +66,7 @@ export function initState(): State {
         pokeapi,
         nextLocationsURL: null,
         previousLocationsURL: null,
+        pokedex: {},
     }
 }
 

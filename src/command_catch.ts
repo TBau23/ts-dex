@@ -4,11 +4,11 @@ export async function commandCatch(state: State, pokemonName: string) {
     console.log(`Throwing a Pokeball at ${pokemonName}...`);
     try {
         const pokemon = await state.pokeapi.fetchPokemon(pokemonName);
-        const catchRate = pokemon.base_experience / 100;
+        const catchRate = pokemon.base_experience / 150;
         const random = Math.random();
         if (random < catchRate) {
             console.log(`You caught ${pokemonName}!`);
-            
+            state.pokedex[pokemonName] = pokemon;
         } else {
             console.log(`You missed ${pokemonName}!`);
         }
